@@ -59,7 +59,7 @@ export default function PageProjectDetails({
   projectId,
   projectCustomUrl,
 }: Props) {
-  const { walletStatus, walletAuthHeaderInfo } = useAppContextValue$Consumer();
+  const { walletStatus } = useAppContextValue$Consumer();
   const { showModal } = useModalPromises();
   const { showMessage } = useToast();
   const router = useRouter();
@@ -76,8 +76,9 @@ export default function PageProjectDetails({
       typeof projectCustomUrl === "string" ? projectCustomUrl : undefined,
     preset: "full",
     authHeader:
-      walletAuthHeaderInfo.status === "authenticated"
-        ? walletAuthHeaderInfo.info
+      walletStatus.status === "connected" &&
+      walletStatus.headerInfo.status === "authenticated"
+        ? walletStatus.headerInfo.info
         : undefined,
   });
 

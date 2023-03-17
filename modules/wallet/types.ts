@@ -1,5 +1,6 @@
 import { AddressDetails, Lucid } from "lucid-cardano";
 
+import * as Auth from "@/modules/authorization";
 import { Address, LovelaceAmount } from "@/modules/business-types";
 
 export type WalletName =
@@ -11,6 +12,11 @@ export type WalletName =
   | "gerowallet"
   | "typhoncip30"
   | string;
+
+export type WalletAuthHeaderInfo =
+  | { status: "authenticated"; info: Auth.AuthHeader }
+  | { status: "unauthenticated" }
+  | { status: "not-ready" };
 
 /**
  * A readonly-and-serializable object containing the wallet info.
@@ -25,5 +31,10 @@ export type WalletInfo = {
 export type WalletStatus =
   | { status: "unknown" }
   | { status: "connecting"; walletName: WalletName }
-  | { status: "connected"; info: WalletInfo; lucid: Lucid }
+  | {
+      status: "connected";
+      info: WalletInfo;
+      lucid: Lucid;
+      headerInfo: WalletAuthHeaderInfo;
+    }
   | { status: "disconnected" };
